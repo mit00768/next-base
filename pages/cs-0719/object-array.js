@@ -243,21 +243,36 @@ export default function ObjectArray() {
       <br />
       <button
         onClick={() => {
-          // 第1種. slice(切割)，沒有副作用，會回傳薪陣列不會修改原呼叫陣列
-          // 語法公式(注意不包含endIndex): array.slice(startIndex, endIndex)
-          // 1. 先找到id為2的物件資料索引值
-          const foundIndex = data.findIndex((v) => v.id === 2)
-          // 2. 畔對是否有找到索引值
-          if (foundIndex > -1) {
-            const aa = data.slice(0, foundIndex + 1)
-            const bb = data.slice(foundIndex + 1) // 沒有第二傳入參數，會到陣列最尾端
+          // // 第1種. slice(切割)，沒有副作用，會回傳薪陣列不會修改原呼叫陣列
+          // // 語法公式(注意不包含endIndex): array.slice(startIndex, endIndex)
+          // // 1. 先找到id為2的物件資料索引值
+          // const foundIndex = data.findIndex((v) => v.id === 2)
+          // // 2. 畔對是否有找到索引值
+          // if (foundIndex > -1) {
+          //   const aa = data.slice(0, foundIndex + 1)
+          //   const bb = data.slice(foundIndex + 1) // 沒有第二傳入參數，會到陣列最尾端
 
-            // 新物件
-            const newObj = { id: 5, text: 'bbb' }
-            // 組合新陣列
-            const newData = [...aa, newObj, ...bb]
-            // 設定到狀態
-            setData(newData)
+          //   // 新物件
+          //   const newObj = { id: 5, text: 'bbb' }
+          //   // 組合新陣列
+          //   const newData = [...aa, newObj, ...bb]
+          //   // 設定到狀態
+          //   setData(newData)
+          // }
+          // ------------------
+
+          // 地2種，使用splice(粘接)
+          // 插入公式(在某個索引之後): array.splice(insertIndex + 1. 0, value)
+          // 1.先找到id為2的物件資料索引值
+          const foundIndex = data.findIndex((v) => v.id === 2)
+          // 2.判斷是否有找到索引值
+          if (foundIndex > -1) {
+            // 2-1 深拷貝(如果只作用到陣列層級，使用[...data]也可以)
+            const nextData = JSON.parse(JSON.stringify(data))
+            // 2-2
+            nextData.splice(foundIndex + 1, 0, { id: 5, text: 'bbb' })
+            // 2-3
+            setData(nextData)
           }
         }}
       >
